@@ -14,11 +14,11 @@ export class CartComponent implements OnInit {
   public Math = Math;
 
   constructor(
-    private readonly _bookService: BookService
+    private readonly bookService: BookService
   ) { }
 
   ngOnInit(): void {
-    this.listCartBook = this._bookService.getBooksFromCart();
+    this.listCartBook = this.bookService.getBooksFromCart();
     this.totalPrice = this.getTotalPrice(this.listCartBook);
   }
 
@@ -33,7 +33,7 @@ export class CartComponent implements OnInit {
   public onInputNumberChange(action: string, book: Book): void {
     const amount = action === 'plus' ? book.amount + 1 : book.amount - 1;
     book.amount = Number(amount);
-    this.listCartBook = this._bookService.updateAmountBook(book);
+    this.listCartBook = this.bookService.updateAmountBook(book);
     this.totalPrice = this.getTotalPrice(this.listCartBook);
   }
 
@@ -41,13 +41,13 @@ export class CartComponent implements OnInit {
     if (this.listCartBook && this.listCartBook.length > 0) {
       this._clearListCartBook();
     } else {
-       console.log("No books available");
+       console.log('No books available');
     }
   }
 
   private _clearListCartBook() {
     this.listCartBook = [];
-    this._bookService.removeBooksFromCart();
+    this.bookService.removeBooksFromCart();
   }
 
 
