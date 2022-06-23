@@ -30,7 +30,6 @@ const listBook: Book[] = [
   }
 ];
 
-
 describe('Cart component', () => {
 
   let component: CartComponent;
@@ -66,7 +65,7 @@ describe('Cart component', () => {
     jest.resetAllMocks();
   });
 
-  it('should create', () => {
+  test('should create', () => {
     expect(component).toBeTruthy();
   });
 
@@ -74,15 +73,16 @@ describe('Cart component', () => {
   //     expect(component2).toBeTruthy();
   // }));
 
-
-  it('getTotalPrice returns an amaunt', () => {
+  // metodo con return (regresa un valor)
+  test('getTotalPrice returns an amount', () => {
     const totalPrice = component.getTotalPrice(listBook);
     expect(totalPrice).toBeGreaterThan(0);
     // expect(totalPrice).not.toBe(0);
     // expect(totalPrice).not.toBeNull();
   });
 
-  it('onInputNumberChange increments correctly', () => {
+  // metodo sin return (regresa un valor)
+  test('onInputNumberChange increments correctly', () => {
     const action = 'plus';
     const book: Book = {
       name: '',
@@ -94,6 +94,7 @@ describe('Cart component', () => {
 
     const spy1 = jest.spyOn(service, 'updateAmountBook').mockImplementation(() => null);
     const spy2 = jest.spyOn(component, 'getTotalPrice').mockImplementation(() => null);
+
     expect(book.amount).toBe(2);
     component.onInputNumberChange(action, book);
     expect(book.amount).toBe(3);
@@ -102,7 +103,7 @@ describe('Cart component', () => {
     expect(spy2).toHaveBeenCalledTimes(1);
   });
 
-  it('onInputNumberChange decrements correctly', () => {
+  test('onInputNumberChange decrements correctly', () => {
     const action = 'minus';
     const book: Book = {
       name: '',
@@ -114,6 +115,7 @@ describe('Cart component', () => {
 
     const spy1 = jest.spyOn(service, 'updateAmountBook').mockImplementation(() => null);
     const spy2 = jest.spyOn(component, 'getTotalPrice').mockImplementation(() => null);
+
     expect(book.amount).toBe(2);
     component.onInputNumberChange(action, book);
     expect(book.amount).toBe(1);
@@ -122,32 +124,36 @@ describe('Cart component', () => {
     expect(spy2).toHaveBeenCalledTimes(1);
   });
 
-  it('onClearBooks works correctly', () => {
+  test('onClearBooks works correctly', () => {
+
     const spy1 = jest.spyOn(service, 'removeBooksFromCart').mockImplementation(() => null);
-    const spy2 = jest.spyOn(component as any, '_clearListCartBook');
+    const spy2 = jest.spyOn(component as any, 'clearListCartBook');
+
     component.listCartBook = listBook;
     component.onClearBooks();
+
     expect(component.listCartBook.length).toBe(0);
     expect(spy1).toHaveBeenCalledTimes(1);
     expect(spy2).toHaveBeenCalledTimes(1);
   });
 
-  it('_clearListCartBook works correctly', () => {
+  // alternativa de prueba, no es recomendable aplicarla
+  test('clearListCartBook works correctly', () => {
     const spy1 = jest.spyOn(service, 'removeBooksFromCart').mockImplementation(() => null);
     component.listCartBook = listBook;
-    component['_clearListCartBook']();
+    component['clearListCartBook']();
     expect(component.listCartBook.length).toBe(0);
     expect(spy1).toHaveBeenCalledTimes(1);
   });
 
-  it('The title "The cart is empty" is not displayed when there is a list', () => {
+  test('The title "The cart is empty" is not displayed when there is a list', () => {
     component.listCartBook = listBook;
     fixture.detectChanges();
     const debugElement: DebugElement = fixture.debugElement.query(By.css('#titleCartEmpty'));
     expect(debugElement).toBeFalsy();
   });
 
-  it('The title "The cart is empty" is displayed correctly when the list is empty', () => {
+  test('The title "The cart is empty" is displayed correctly when the list is empty', () => {
     component.listCartBook = [];
     fixture.detectChanges();
     const debugElement: DebugElement = fixture.debugElement.query(By.css('#titleCartEmpty'));

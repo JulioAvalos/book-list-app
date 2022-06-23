@@ -39,13 +39,13 @@ export class CartComponent implements OnInit {
 
   public onClearBooks(): void {
     if (this.listCartBook && this.listCartBook.length > 0) {
-      this._clearListCartBook();
+      this.clearListCartBook();
     } else {
        console.log('No books available');
     }
   }
 
-  private _clearListCartBook() {
+  private clearListCartBook() {
     this.listCartBook = [];
     this.bookService.removeBooksFromCart();
   }
