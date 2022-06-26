@@ -1,6 +1,6 @@
 import {HomeComponent} from './home.component';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {BookService} from '../../services/book.service';
 import {Book} from '../../models/book.model';
@@ -30,6 +30,17 @@ const listBook: Book[] = [
   }
 ];
 
+const bookServiceMock = {
+  getBooks: () => of(listBook)
+};
+
+@Pipe({name: 'reduceText'})
+class ReducePipeMock implements PipeTransform {
+  transform(value: any, ...args: any[]): string {
+    return '';
+  }
+}
+
 describe('Home Component', () => {
 
   let component: HomeComponent;
@@ -41,10 +52,15 @@ describe('Home Component', () => {
         HttpClientTestingModule
       ],
       declarations: [
-        HomeComponent
+        HomeComponent,
+        ReducePipeMock
       ],
       providers: [
-        BookService
+        // BookService
+        {
+          provide: BookService,
+          useValue: bookServiceMock
+        }
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA
@@ -64,10 +80,13 @@ describe('Home Component', () => {
 
   // prueba de 'subscriptions' en RxJS
   test('getBook get books from the subscription', () => {
-    const bookService = fixture.debugElement.injector.get(BookService);
-    const spy1 = jest.spyOn(bookService, 'getBooks').mockReturnValueOnce(of(listBook));
+    // const bookService = fixture.debugElement.injector.get(BookService);
+    // const spy1 = jest.spyOn(bookService, 'getBooks').mockReturnValueOnce(of(listBook));
+
     component.getBooks();
-    expect(spy1).toHaveBeenCalledTimes(1);
+
+    // expect(spy1).toHaveBeenCalledTimes(1);
+
     expect(component.listBook.length).toBe(3);
     expect(component.listBook).toEqual(listBook);
   });
