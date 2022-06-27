@@ -49,7 +49,7 @@ export class BookService {
       }
     }
     localStorage.setItem('listCartBook', JSON.stringify(listBook));
-    this._toastSuccess(book);
+    this.toastSuccess(book);
   }
 
   public updateAmountBook(book: Book): Book[] {
@@ -67,7 +67,7 @@ export class BookService {
     return listBookCart;
   }
 
-  private _toastSuccess(book: Book) {
+  private toastSuccess(book: Book) {
     const Toast = swal.mixin({
       toast: true,
       position: 'bottom-end',
