@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../models/book.model';
+import { ConfirmDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cart',
@@ -14,8 +16,10 @@ export class CartComponent implements OnInit {
   public Math = Math;
 
   constructor(
-    private readonly bookService: BookService
-  ) { }
+    private readonly bookService: BookService,
+    private readonly dialog: MatDialog
+  ) {
+  }
 
   ngOnInit(): void {
     this.listCartBook = this.bookService.getBooksFromCart();
@@ -37,11 +41,25 @@ export class CartComponent implements OnInit {
     this.totalPrice = this.getTotalPrice(this.listCartBook);
   }
 
+
   public onClearBooks(): void {
-    if (this.listCartBook && this.listCartBook.length > 0) {
-      this.clearListCartBook();
+    if (this.listCartBook?.length > 0) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        maxWidth: '400px',
+        data: {
+          title: '¿Estás seguro?',
+          message: 'Desea eliminar todos los productos del carrito?',
+        }
+      });
+
+      dialogRef.afterClosed().subscribe((dialogResult: boolean) => {
+        if (dialogResult) {
+          this.clearListCartBook();
+        }
+      });
+
     } else {
-       console.log('No books available');
+      console.log('No books available');[]
     }
   }
 

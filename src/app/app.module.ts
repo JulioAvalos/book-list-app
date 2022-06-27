@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { PagesModule } from './pages/pages.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BookService } from './services/book.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { BookService } from './services/book.service';
   imports: [
     BrowserModule,
     HttpClientModule,
-    PagesModule
+    PagesModule,
+    NoopAnimationsModule
   ],
   providers: [
     BookService

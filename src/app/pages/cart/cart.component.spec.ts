@@ -1,10 +1,12 @@
-import {CartComponent} from './cart.component';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BookService} from '../../services/book.service';
-import {CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
-import {Book} from '../../models/book.model';
-import {By} from '@angular/platform-browser';
+import { CartComponent } from './cart.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BookService } from '../../services/book.service';
+import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Book } from '../../models/book.model';
+import { By } from '@angular/platform-browser';
+import { MatDialog } from '@angular/material/dialog';
+import { of } from 'rxjs';
 
 const listBook: Book[] = [
   {
@@ -30,6 +32,14 @@ const listBook: Book[] = [
   }
 ];
 
+const MatDialogMock = {
+  open() {
+    return {
+      afterClosed: () => of(true)
+    };
+  }
+};
+
 describe('Cart component', () => {
 
   let component: CartComponent;
@@ -39,13 +49,15 @@ describe('Cart component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
       ],
       declarations: [
         CartComponent
       ],
       providers: [
-        BookService
+        BookService,
+        {provide: MatDialog, useValue: MatDialogMock}
+        // MatDialog
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
     }).compileComponents();
