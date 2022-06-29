@@ -1,10 +1,11 @@
-import {HomeComponent} from './home.component';
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, Pipe, PipeTransform} from '@angular/core';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {BookService} from '../../services/book.service';
-import {Book} from '../../models/book.model';
-import {of} from 'rxjs';
+import { HomeComponent } from './home.component';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, Pipe, PipeTransform } from '@angular/core';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { BookService } from '../../services/book.service';
+import { Book } from '../../models/book.model';
+import { of } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 
 const listBook: Book[] = [
   {
@@ -60,6 +61,10 @@ describe('Home Component', () => {
         {
           provide: BookService,
           useValue: bookServiceMock
+        },
+        {
+          provide: Document,
+          useExisting: DOCUMENT
         }
       ],
       schemas: [
@@ -89,6 +94,15 @@ describe('Home Component', () => {
 
     expect(component.listBook.length).toBe(3);
     expect(component.listBook).toEqual(listBook);
+  });
+
+  test('test alert', () => {
+    const documentService = TestBed.inject(Document);
+    const windowAngular = documentService.defaultView;
+    const spy = jest.spyOn(windowAngular, 'alert').mockImplementation(() => null);
+    component.ngOnInit();
+    expect(spy).toHaveBeenCalled();
+
   });
 
 });
