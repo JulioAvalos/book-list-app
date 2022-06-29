@@ -8,7 +8,7 @@
     "test": "jest",
     "test-watch": "jest --watchAll",
     "test-coverage": "jest --coverage",
-    "tbuild": "ng test --no-watch && ng build",
+    "tbuild": "jest && ng build",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "mock": "json-server db.json"
